@@ -11,29 +11,29 @@ import { Plus, LayoutDashboard, List, Sparkles } from 'lucide-react';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User>(() => {
-    const saved = localStorage.getItem('thekedaar_user');
+    const saved = localStorage.getItem('wealthsense_user');
     return saved ? JSON.parse(saved) : {
-      name: "Pradhan Thekedaar",
-      email: "contact@thekedaarledger.app",
-      photoUrl: "https://picsum.photos/200/200?seed=construction",
-      bio: "Civil Works Contractor | Site Management Expert",
+      name: "Premium User",
+      email: "wealth.master@wealthsense.app",
+      photoUrl: "https://picsum.photos/200/200?seed=luxury",
+      bio: "Wealth Enthusiast & Digital Minimalist",
       currency: "INR"
     };
   });
 
   const [expenses, setExpenses] = useState<Expense[]>(() => {
-    const saved = localStorage.getItem('thekedaar_expenses');
+    const saved = localStorage.getItem('wealthsense_expenses');
     return saved ? JSON.parse(saved) : [];
   });
   
   const [activeTab, setActiveTab] = useState<'dashboard' | 'transactions' | 'insights' | 'add' | 'profile'>('dashboard');
 
   useEffect(() => {
-    localStorage.setItem('thekedaar_expenses', JSON.stringify(expenses));
+    localStorage.setItem('wealthsense_expenses', JSON.stringify(expenses));
   }, [expenses]);
 
   useEffect(() => {
-    localStorage.setItem('thekedaar_user', JSON.stringify(user));
+    localStorage.setItem('wealthsense_user', JSON.stringify(user));
   }, [user]);
 
   const addExpense = (newExpense: Omit<Expense, 'id'>) => {
@@ -50,7 +50,7 @@ const App: React.FC = () => {
   };
 
   const clearAllData = () => {
-    if (window.confirm("Are you sure you want to erase all ledger records? This cannot be undone.")) {
+    if (window.confirm("Are you sure you want to erase all financial records? This cannot be undone.")) {
       setExpenses([]);
       setActiveTab('dashboard');
     }
@@ -71,8 +71,8 @@ const App: React.FC = () => {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex justify-between items-end px-2">
               <div>
-                <h2 className="text-4xl font-black text-emerald-950 tracking-tighter">Site Log</h2>
-                <p className="text-slate-400 text-sm font-medium">Historical project & labor payments</p>
+                <h2 className="text-4xl font-black text-emerald-950 tracking-tighter">The Ledger</h2>
+                <p className="text-slate-400 text-sm font-medium">Historical transaction records</p>
               </div>
               <button 
                 onClick={() => setActiveTab('add')}
@@ -96,27 +96,28 @@ const App: React.FC = () => {
         {activeTab === 'add' && (
           <div className="glass rounded-[3rem] p-10 premium-shadow animate-in zoom-in-95 duration-500">
             <div className="mb-10">
-                <h2 className="text-4xl font-black text-emerald-950 tracking-tighter">New Ledger Entry</h2>
-                <p className="text-slate-400 font-medium text-base mt-2">Log site costs, labor, or project milestones.</p>
+                <h2 className="text-4xl font-black text-emerald-950 tracking-tighter">New Entry</h2>
+                <p className="text-slate-400 font-medium text-base mt-2">Log your financial movements with precision.</p>
             </div>
             <ExpenseForm onSubmit={addExpense} onCancel={() => setActiveTab('dashboard')} />
           </div>
         )}
       </div>
 
+      {/* Floating Premium Navigation Bar */}
       <div className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[95%] max-w-md z-50">
           <nav className="glass border border-white/50 rounded-[3rem] p-3 flex justify-between items-center premium-shadow">
             <NavButton 
               active={activeTab === 'dashboard'} 
               onClick={() => setActiveTab('dashboard')} 
               icon={<LayoutDashboard className="w-5 h-5" />} 
-              label="Overview" 
+              label="Home" 
             />
             <NavButton 
               active={activeTab === 'transactions'} 
               onClick={() => setActiveTab('transactions')} 
               icon={<List className="w-5 h-5" />} 
-              label="Ledger" 
+              label="Logs" 
             />
             <button 
               onClick={() => setActiveTab('add')}
@@ -128,7 +129,7 @@ const App: React.FC = () => {
               active={activeTab === 'insights'} 
               onClick={() => setActiveTab('insights')} 
               icon={<Sparkles className="w-5 h-5" />} 
-              label="Analysis" 
+              label="Brain" 
             />
             <NavButton 
               active={activeTab === 'profile'} 

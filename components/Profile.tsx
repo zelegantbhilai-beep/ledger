@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Expense, User } from '../types';
-import { Settings, Shield, ChevronRight, Edit3, Trash2, Bell, Smartphone, ShieldCheck } from 'lucide-react';
+import { Settings, Shield, ChevronRight, Edit3, Trash2, Bell, Smartphone, ShieldCheck, Camera, Upload } from 'lucide-react';
 
 interface ProfileProps {
   user: User;
@@ -13,6 +13,7 @@ interface ProfileProps {
 export const Profile: React.FC<ProfileProps> = ({ user, setUser, expenses, onClearData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState(user);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const stats = React.useMemo(() => {
     const totalTransactions = expenses.length;
@@ -26,11 +27,55 @@ export const Profile: React.FC<ProfileProps> = ({ user, setUser, expenses, onCle
     setIsEditing(false);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditForm({ ...editForm, photoUrl: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   if (isEditing) {
     return (
       <div className="glass rounded-[3rem] p-10 premium-shadow animate-in zoom-in-95 duration-500">
-        <h2 className="text-3xl font-black text-emerald-950 tracking-tighter mb-8">Edit Portfolio Profile</h2>
+        <h2 className="text-3xl font-black text-emerald-950 tracking-tighter mb-8 text-center">Edit Portfolio Profile</h2>
+        
         <form onSubmit={handleUpdateProfile} className="space-y-6">
+          {/* Profile Picture Upload Area */}
+          <div className="flex flex-col items-center mb-8">
+            <div 
+              onClick={triggerFileInput}
+              className="relative group cursor-pointer"
+            >
+              <div className="w-32 h-32 rounded-[3rem] bg-slate-100 p-1.5 shadow-xl overflow-hidden border-2 border-dashed border-emerald-200 group-hover:border-emerald-500 transition-colors">
+                <img 
+                  src={editForm.photoUrl} 
+                  className="w-full h-full object-cover rounded-[2.7rem] opacity-60 group-hover:opacity-40 transition-opacity" 
+                  alt="Profile Preview" 
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-emerald-700">
+                  <Camera className="w-8 h-8 mb-1" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Change</span>
+                </div>
+              </div>
+            </div>
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-3">Click photo to upload new</p>
+          </div>
+
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Identity Name</label>
             <input 
@@ -38,27 +83,34 @@ export const Profile: React.FC<ProfileProps> = ({ user, setUser, expenses, onCle
               value={editForm.name}
               onChange={e => setEditForm({...editForm, name: e.target.value})}
               className="w-full p-4 glass border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 font-bold text-slate-800"
+              placeholder="Enter your name"
             />
           </div>
+
           <div className="space-y-2">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Professional Headline</label>
             <textarea 
               value={editForm.bio}
               onChange={e => setEditForm({...editForm, bio: e.target.value})}
               className="w-full p-4 glass border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 font-medium text-slate-800 h-24 resize-none"
+              placeholder="e.g. Civil Works Contractor"
             />
           </div>
+
           <div className="flex gap-4 pt-4">
             <button 
               type="button" 
-              onClick={() => setIsEditing(false)}
-              className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-2xl font-bold"
+              onClick={() => {
+                setIsEditing(false);
+                setEditForm(user);
+              }}
+              className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-2xl font-bold hover:bg-slate-200 transition-colors"
             >
               Discard
             </button>
             <button 
               type="submit"
-              className="flex-[2] py-4 bg-emerald-600 text-white rounded-2xl font-extrabold shadow-lg shadow-emerald-100"
+              className="flex-[2] py-4 bg-emerald-600 text-white rounded-2xl font-extrabold shadow-lg shadow-emerald-100 hover:bg-emerald-700 transition-colors"
             >
               Update Profile
             </button>
@@ -135,7 +187,7 @@ export const Profile: React.FC<ProfileProps> = ({ user, setUser, expenses, onCle
 
       <div className="pb-10 pt-4 flex justify-center items-center gap-2">
          <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div>
-         <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">WealthSense v2.5 Local</span>
+         <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">Thekedaar Ledger v2.5 Local</span>
          <div className="w-1.5 h-1.5 rounded-full bg-emerald-600"></div>
       </div>
     </div>

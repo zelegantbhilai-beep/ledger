@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Expense } from '../types';
-import { Trash2, ShoppingBag, Coffee, Car, Film, CreditCard, Heart, Package, Utensils, Zap, GraduationCap, Home, TrendingUp, Wallet, Smartphone, Banknote, Landmark, Calendar, Users, HardHat, Truck, Hammer } from 'lucide-react';
+import { Trash2, ShoppingBag, Coffee, Car, Film, CreditCard, Heart, Package, Utensils, Zap, GraduationCap, Home, TrendingUp, Wallet, Smartphone, Banknote, Landmark, Calendar } from 'lucide-react';
 
 interface ExpenseListProps {
   expenses: Expense[];
@@ -11,18 +11,17 @@ interface ExpenseListProps {
 const CategoryIcon: React.FC<{ category: string }> = ({ category }) => {
   const iconClass = "w-5 h-5";
   switch (category) {
-    case 'Labor Payment': return <Users className={`${iconClass} text-orange-600`} />;
-    case 'Raw Materials': return <Package className={`${iconClass} text-amber-700`} />;
-    case 'Fuel & Transport': return <Truck className={`${iconClass} text-blue-600`} />;
-    case 'Machinery': return <Hammer className={`${iconClass} text-indigo-600`} />;
-    case 'Site Expenses': return <HardHat className={`${iconClass} text-emerald-600`} />;
-    case 'Office Rent': return <Home className={`${iconClass} text-slate-600`} />;
-    case 'Project Payment': return <TrendingUp className={`${iconClass} text-emerald-600`} />;
+    case 'Food & Drink': return <Utensils className={`${iconClass} text-orange-600`} />;
+    case 'Shopping': return <ShoppingBag className={`${iconClass} text-pink-600`} />;
+    case 'Transport': return <Car className={`${iconClass} text-blue-600`} />;
+    case 'Entertainment': return <Film className={`${iconClass} text-indigo-600`} />;
+    case 'Bills': return <Zap className={`${iconClass} text-amber-600`} />;
+    case 'Health': return <Heart className={`${iconClass} text-rose-600`} />;
+    case 'Rent': return <Home className={`${iconClass} text-emerald-600`} />;
+    case 'Education': return <GraduationCap className={`${iconClass} text-cyan-600`} />;
+    case 'Investment': return <TrendingUp className={`${iconClass} text-violet-600`} />;
     case 'Salary': return <Wallet className={`${iconClass} text-emerald-600`} />;
-    case 'Entertainment': return <Film className={`${iconClass} text-indigo-400`} />;
-    case 'Bills': return <Zap className={`${iconClass} text-amber-500`} />;
-    case 'Health': return <Heart className={`${iconClass} text-rose-500`} />;
-    default: return <Package className={`${iconClass} text-slate-400`} />;
+    default: return <Package className={`${iconClass} text-slate-600`} />;
   }
 };
 
@@ -41,14 +40,15 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDelete }) 
     return (
       <div className="text-center py-24 px-6 glass rounded-[3rem] animate-in fade-in duration-700">
         <div className="bg-emerald-50 w-20 h-20 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6">
-          <HardHat className="w-8 h-8 text-emerald-300" />
+          <Package className="w-8 h-8 text-emerald-300" />
         </div>
-        <h3 className="text-slate-900 font-extrabold text-xl mb-2">Ledger is Empty</h3>
-        <p className="text-slate-400 text-sm max-w-[280px] mx-auto leading-relaxed">Start tracking your site expenses and project payments to maintain business health.</p>
+        <h3 className="text-slate-900 font-extrabold text-xl mb-2">Vault is Unpopulated</h3>
+        <p className="text-slate-400 text-sm max-w-[280px] mx-auto leading-relaxed">Your financial journey begins with the first entry. Tap the record icon below.</p>
       </div>
     );
   }
 
+  // Group by date
   const grouped = expenses.reduce((acc, exp) => {
     const date = exp.date;
     if (!acc[date]) acc[date] = [];

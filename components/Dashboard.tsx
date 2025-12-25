@@ -40,18 +40,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ expenses }) => {
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+      {/* Luxury Balance Card */}
       <div className="hero-gradient rounded-[3rem] p-10 text-white shadow-2xl shadow-emerald-900/20">
         <div className="relative z-10 flex flex-col space-y-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 bg-white/10 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
                 <ShieldCheck className="w-4 h-4 text-emerald-300" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-50">Master Ledger Balance</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-50">Private Wealth Portfolio</span>
             </div>
             <Wallet className="w-6 h-6 text-emerald-200/50" />
           </div>
 
           <div>
-            <p className="text-emerald-100/60 text-xs font-semibold tracking-wider uppercase mb-2">Business Cash Flow</p>
+            <p className="text-emerald-100/60 text-xs font-semibold tracking-wider uppercase mb-2">Net Cash Liquidity</p>
             <h2 className="text-6xl font-extrabold tracking-tighter flex items-baseline gap-1">
               <span className="text-3xl font-medium text-emerald-200/70">₹</span>
               {netBalance.toLocaleString('en-IN')}
@@ -61,13 +62,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ expenses }) => {
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-1 border-l border-emerald-500/30 pl-4">
               <div className="flex items-center gap-1.5 text-emerald-300/80 text-[10px] font-bold uppercase tracking-wider">
-                <ArrowUpCircle className="w-3 h-3" /> Project Inflow
+                <ArrowUpCircle className="w-3 h-3" /> Inflow
               </div>
               <p className="text-2xl font-bold tracking-tight">₹{totalIncome.toLocaleString('en-IN')}</p>
             </div>
             <div className="space-y-1 border-l border-rose-500/30 pl-4">
               <div className="flex items-center gap-1.5 text-rose-300/80 text-[10px] font-bold uppercase tracking-wider">
-                <ArrowDownCircle className="w-3 h-3" /> Site Outflow
+                <ArrowDownCircle className="w-3 h-3" /> Outflow
               </div>
               <p className="text-2xl font-bold tracking-tight">₹{totalExpense.toLocaleString('en-IN')}</p>
             </div>
@@ -76,15 +77,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ expenses }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Visual Analytics */}
         <div className="glass rounded-[2.5rem] p-8 premium-shadow">
           <h3 className="font-bold text-slate-800 text-lg mb-6 flex items-center justify-between">
-            Cost Concentration
+            Category Intensity
             <TrendingUp className="w-5 h-5 text-emerald-600" />
           </h3>
           <div className="h-64 relative">
              {categoryData.length === 0 ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-300 text-sm italic space-y-2">
-                    <p>Add project data to visualize</p>
+                    <p>Portfolio data needed</p>
                 </div>
              ) : (
                 <>
@@ -111,7 +113,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ expenses }) => {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Expenses</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Concentrated</p>
                     <p className="text-2xl font-black text-emerald-950 leading-none">₹{totalExpense > 999 ? (totalExpense/1000).toFixed(1) + 'k' : totalExpense}</p>
                 </div>
                 </>
@@ -119,27 +121,28 @@ export const Dashboard: React.FC<DashboardProps> = ({ expenses }) => {
           </div>
         </div>
 
+        {/* Wealth Metrics */}
         <div className="glass rounded-[2.5rem] p-8 premium-shadow flex flex-col justify-between">
           <div className="space-y-8">
             <h3 className="font-bold text-slate-800 text-lg flex items-center justify-between">
-              Project Vitals
+              Performance Vitals
               <IndianRupee className="w-5 h-5 text-amber-500" />
             </h3>
             
             <div className="space-y-6">
-                <MetricRow label="Top Category" value={expenses.length > 0 ? (expenses.reduce((a,b) => a.amount > b.amount ? a : b).category) : 'N/A'} />
-                <MetricRow label="Profit Margin" value={totalIncome > 0 ? `${Math.max(0, Math.round((netBalance / totalIncome) * 100))}%` : '0%'} />
-                <MetricRow label="Labor Share" value={expenses.length > 0 ? `${Math.round((expenses.filter(e => e.category === 'Labor Payment').reduce((s,e) => s + e.amount, 0) / (totalExpense || 1)) * 100)}%` : '0%'} />
+                <MetricRow label="Primary Income" value={expenses.filter(e => e.type === 'Income').sort((a,b) => b.amount - a.amount)[0]?.category || 'N/A'} />
+                <MetricRow label="Retention Rate" value={totalIncome > 0 ? `${Math.max(0, Math.round((netBalance / totalIncome) * 100))}%` : '0%'} />
+                <MetricRow label="Payment Digitality" value={expenses.length > 0 ? `${Math.round((expenses.filter(e => e.paymentMode === 'UPI').length / expenses.length) * 100)}% UPI` : '0%'} />
             </div>
           </div>
 
           <div className="pt-8 border-t border-slate-100 mt-auto">
             <div className="flex justify-between mb-3 items-end">
                <div>
-                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Business Health</p>
-                 <p className="text-sm font-bold text-emerald-700">{netBalance > totalExpense ? 'Stable Margins' : 'Overhead Warning'}</p>
+                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Financial Stability</p>
+                 <p className="text-sm font-bold text-emerald-700">{netBalance > totalExpense ? 'Optimal Savings' : 'Review Spending'}</p>
                </div>
-               <span className="text-[10px] font-black text-slate-400">{Math.round((totalExpense / (totalIncome || 1)) * 100)}% Usage</span>
+               <span className="text-[10px] font-black text-slate-400">{Math.round((totalExpense / (totalIncome || 1)) * 100)}% Burn</span>
             </div>
             <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
               <div 

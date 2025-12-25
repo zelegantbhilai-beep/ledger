@@ -2,6 +2,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Expense } from "../types";
 
+// Fix: Initialize GoogleGenAI using process.env.API_KEY directly as a named parameter
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getSpendingInsights = async (expenses: Expense[]) => {
@@ -12,10 +13,9 @@ export const getSpendingInsights = async (expenses: Expense[]) => {
   ).join('\n');
 
   const prompt = `
-    Analyze the following list of transactions for an Indian "Thekedaar" (Contractor).
-    The categories include Labor Payment, Raw Materials, Machinery, etc.
-    Provide professional coaching on project profitability, labor cost efficiency, and material management.
-    Be practical and business-oriented. Highlight cash-flow gaps and offer 3 actionable tips for scaling a contracting business in the Indian construction landscape.
+    Analyze the following list of recent financial transactions (Incomes and Expenses) from an Indian user.
+    Provide coaching on their cash flow, savings potential, and spending habits.
+    Be encouraging but honest. Highlight any concerning trends and offer 3 actionable tips relevant to the Indian middle-class context.
     
     Transactions:
     ${expenseSummary}
@@ -32,17 +32,17 @@ export const getSpendingInsights = async (expenses: Expense[]) => {
           properties: {
             summary: {
               type: Type.STRING,
-              description: 'A brief 2-sentence summary of project health.'
+              description: 'A brief 2-sentence summary of the financial health.'
             },
             suggestions: {
               type: Type.ARRAY,
               items: { type: Type.STRING },
-              description: 'Three business-scaling tips for a contractor.'
+              description: 'Three actionable financial tips.'
             },
             riskLevel: {
               type: Type.STRING,
               enum: ['Low', 'Medium', 'High'],
-              description: 'Project stability risk level.'
+              description: 'Financial stability risk level.'
             }
           },
           required: ['summary', 'suggestions', 'riskLevel']
@@ -50,6 +50,7 @@ export const getSpendingInsights = async (expenses: Expense[]) => {
       }
     });
 
+    // Fix: Access the .text property directly instead of calling it as a method, following the SDK guidelines
     const jsonStr = response.text.trim();
     return JSON.parse(jsonStr);
   } catch (error) {

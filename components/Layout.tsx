@@ -20,16 +20,16 @@ export const Layout: React.FC<LayoutProps> = ({ children, user }) => {
           </div>
           <div>
               <h1 className="text-xl font-black text-emerald-950 tracking-tighter leading-none">
-                Thekedaar Ledger
+                WealthSense
               </h1>
-              <p className="text-[10px] font-black text-emerald-600/40 uppercase tracking-[0.3em] mt-1">Contractor OS</p>
+              <p className="text-[10px] font-black text-emerald-600/40 uppercase tracking-[0.3em] mt-1">Management Console</p>
           </div>
         </div>
         
         <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-2 bg-slate-100/50 px-4 py-2 rounded-2xl border border-slate-200/20">
                 <Search className="w-4 h-4 text-slate-300" />
-                <span className="text-xs text-slate-300 font-medium">Search Entries...</span>
+                <span className="text-xs text-slate-300 font-medium">Search Assets...</span>
             </div>
             <button className="relative p-2 text-slate-400 hover:text-emerald-700 transition-colors">
                 <Bell className="w-5 h-5" />

@@ -1,17 +1,15 @@
 
 export type Category = 
-  | 'Labor Payment' 
-  | 'Raw Materials' 
-  | 'Fuel & Transport' 
-  | 'Machinery' 
-  | 'Site Expenses' 
+  | 'Food & Drink' 
+  | 'Shopping' 
+  | 'Transport' 
   | 'Entertainment' 
   | 'Bills' 
   | 'Health' 
-  | 'Office Rent'
+  | 'Rent'
   | 'Education'
   | 'Investment'
-  | 'Project Payment'
+  | 'Salary'
   | 'Other';
 
 export type TransactionType = 'Expense' | 'Income';

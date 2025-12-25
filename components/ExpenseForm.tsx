@@ -8,11 +8,9 @@ interface ExpenseFormProps {
   onCancel: () => void;
 }
 
-// Fix: Updated CATEGORIES to strictly match the Category type defined in types.ts
 const CATEGORIES: Category[] = [
-  'Labor Payment', 'Raw Materials', 'Fuel & Transport', 'Machinery', 
-  'Site Expenses', 'Entertainment', 'Bills', 'Health', 'Office Rent',
-  'Education', 'Investment', 'Project Payment', 'Other'
+  'Food & Drink', 'Shopping', 'Transport', 'Entertainment', 'Bills', 
+  'Health', 'Rent', 'Education', 'Investment', 'Salary', 'Other'
 ];
 
 const MODES: { label: PaymentMode; icon: React.ReactNode }[] = [
@@ -26,8 +24,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, onCancel }) 
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<TransactionType>('Expense');
-  // Fix: Changed initial state to a valid Category value
-  const [category, setCategory] = useState<Category>('Site Expenses');
+  const [category, setCategory] = useState<Category>('Food & Drink');
   const [paymentMode, setPaymentMode] = useState<PaymentMode>('UPI');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [notes, setNotes] = useState('');
@@ -73,8 +70,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, onCancel }) 
           <input
             type="text"
             required
-            // Fix: Updated placeholders to match the construction/contractor context
-            placeholder={type === 'Expense' ? "e.g. Cement Purchase" : "e.g. Client Payment"}
+            placeholder={type === 'Expense' ? "e.g. Amazon Shopping" : "e.g. Monthly Salary"}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full p-4 bg-white/50 border border-slate-200 rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all font-medium text-slate-700"
